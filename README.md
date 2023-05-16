@@ -17,7 +17,7 @@ Python script that uses the Pandas library to read data from an Excel file, make
 </br>3. Install the required dependencies by running the command
 > pip install pandas requests
 
-</br>4. reate an input Excel file named 'input.xlsx' in the same directory as the script, and add a sheet named Sheet1 with two columns: origin and destination. Enter the addresses you want to calculate the distances and durations for in these columns.
+</br>4. Create an input Excel file named 'input.xlsx' in the same directory as the script, and add a sheet named Sheet1 with two columns: origin and destination. Enter the addresses you want to calculate the distances and durations for in these columns.
 
 
 </br>5. Run the script
