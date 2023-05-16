@@ -10,7 +10,7 @@ Python script that uses the Pandas library to read data from an Excel file, make
 
 ## Usage
 
-1. Clone or download this repository to your local machine.
+</br>1. Clone or download this repository to your local machine.
 
 </br>2. Obtain a Google Maps API key and save it in a text file named "your_secret_api_key.txt" in the same directory as the script.
 
