@@ -23,7 +23,7 @@ Python script that uses the Pandas library to read data from an Excel file, make
 </br>5. Run the script
 > python distance_matrix_api.py
 
-</br>The script will output the results to a new Excel file named output.xlsx in the same directory.
+</br>6. The script will output the results to a new Excel file named output.xlsx in the same directory.
 
 
 ## Caching
