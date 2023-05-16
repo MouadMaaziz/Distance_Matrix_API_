@@ -1,7 +1,6 @@
 # Distance_Matrix_API
 Python script that uses the Pandas library to read data from an Excel file, makes requests to the Google Maps Distance Matrix API to retrieve distance and duration information between origins and destinations, caches API responses for efficiency, and saves the results to an output Excel file. This way both the number of API requests and associated costs are reduced.
 
-</br>
 ![Image Alt Text](./distance-matrix-google-maps-api.jpg)
 
 
