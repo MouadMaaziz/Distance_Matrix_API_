@@ -1,7 +1,7 @@
 import pandas as pd
 import requests
 import time
-import os
+import os, sys
 import json
 from functools import wraps
 
@@ -42,39 +42,50 @@ data = pd.read_excel('input.xlsx')
 distances = []
 durations = []
 
+
+def main():
 # Loop through each row in the input data
-for i, row in data.iterrows():
-    origin = row['origin']
-    destination = row['destination']
-    
-    @cached
-    def get_distance_matrix(origin, destination):
-        """Function to send the Distance Matrix API request and parse the response."""
-        url = f'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins={origin}&destinations={destination}&key={API_KEY}'
-        response = requests.get(url)
-        dt = response.json()
-        if 'rows' in dt and len(dt['rows']) > 0 and 'elements' in dt['rows'][0] and len(dt['rows'][0]['elements']) > 0:
-            if 'distance' in dt['rows'][0]['elements'][0]:
-                duration = dt['rows'][0]['elements'][0]['duration']['text']
-                distance = dt['rows'][0]['elements'][0]['distance']['text']
-                return distance, duration
+    for i, row in data.iterrows():
+        origin = row['origin']
+        destination = row['destination']
+        
+        @cached
+        def get_distance_matrix(origin, destination, unit):
+            """Function to send the Distance Matrix API request and parse the response."""
+            url = f'https://maps.googleapis.com/maps/api/distancematrix/json?units={unit}&origins={origin}&destinations={destination}&key={API_KEY}'
+            response = requests.get(url)
+            dt = response.json()
+            if 'rows' in dt and len(dt['rows']) > 0 and 'elements' in dt['rows'][0] and len(dt['rows'][0]['elements']) > 0:
+                if 'distance' in dt['rows'][0]['elements'][0]:
+                    duration = dt['rows'][0]['elements'][0]['duration']['text']
+                    distance = dt['rows'][0]['elements'][0]['distance']['text']
+                    return distance, duration
+                else:
+                    return "Error: No route found", "Error: No route found"
             else:
-                return "Error: No route found", "Error: No route found"
-        else:
-            return "Error: Invalid response format", "Error: Invalid response format"
+                return "Error: Invalid response format", "Error: Invalid response format"
 
-    # Get the distance matrix for this row's origin and destination
-    distance, duration = get_distance_matrix(origin, destination)
+        # Get the distance matrix for this row's origin and destination
+        distance, duration = get_distance_matrix(origin, destination, unit)
 
-    # Append the results to the respective lists
-    distances.append(distance)
-    durations.append(duration)
+        # Append the results to the respective lists
+        distances.append(distance)
+        durations.append(duration)
 
-    #time.sleep(0.1)
+        #time.sleep(0.1)
 
-# Add the new columns to the input data
-data['distance'] = distances
-data['duration'] = durations
+    # Add the new columns to the input data
+    data['distance'] = distances
+    data['duration'] = durations
 
-# Save the updated data to an Excel file
-data.to_excel('output.xlsx', index=False)
+    # Save the updated data to an Excel file
+    data.to_excel('output.xlsx', index=False)
+
+
+
+
+
+
+if __name__ == '__main__':
+    unit = sys.argv[1]
+    main()
