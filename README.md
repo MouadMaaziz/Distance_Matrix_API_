@@ -35,6 +35,7 @@ To avoid sending unnecessary API requests, the script implements caching of the 
 
 ## Contributing
 If you find a bug or have a feature request, please open an issue or submit a pull request on GitHub.
+Or contact me through my e-mail: mouad.maaziz@gmail.com
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
