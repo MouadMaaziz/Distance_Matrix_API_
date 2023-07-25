@@ -87,5 +87,6 @@ def main():
 
 
 if __name__ == '__main__':
-    unit = sys.argv[1]
+    unit = str(input("\tPlease provide the desired unit (km/mi), type: metric or imperial:   "))
+    #unit = sys.argv[1]
     main()
