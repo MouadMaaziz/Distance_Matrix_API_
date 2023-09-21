@@ -23,8 +23,8 @@ This Python script uses the Pandas library to read data from an Excel file, make
 </br>4. Create an input Excel file named 'input.xlsx' in the same directory as the script, and add a sheet named Sheet1 with two columns: origin and destination. Enter the addresses you want to calculate the distances and durations for in these columns.
 
 
-</br>5. Run the script and specifying the unit system as the first argument (metric or imperial)
-> python distance_matrix_api.py metric/imperial
+</br>5. Run the script, then it will prompt you for the desired unit (metric or imperial) and transportation mode
+> python distance_matrix_api.py 
 
 </br>6. The script will output the results to a new Excel file named output.xlsx in the same directory.
 
