@@ -50,9 +50,9 @@ def main():
         destination = row['destination']
         
         @cached
-        def get_distance_matrix(origin, destination, unit):
+        def get_distance_matrix(origin, destination, unit, mode):
             """Function to send the Distance Matrix API request and parse the response."""
-            url = f'https://maps.googleapis.com/maps/api/distancematrix/json?units={unit}&origins={origin}&destinations={destination}&key={API_KEY}'
+            url = f'https://maps.googleapis.com/maps/api/distancematrix/json?units={unit}&origins={origin}&destinations={destination}&mode={mode}&key={API_KEY}'
             response = requests.get(url)
             dt = response.json()
             if 'rows' in dt and len(dt['rows']) > 0 and 'elements' in dt['rows'][0] and len(dt['rows'][0]['elements']) > 0:
@@ -66,7 +66,7 @@ def main():
                 return "Error: Invalid response format", "Error: Invalid response format"
 
         # Get the distance matrix for this row's origin and destination
-        distance, duration = get_distance_matrix(origin, destination, unit)
+        distance, duration = get_distance_matrix(origin, destination, unit, mode)
 
         # Append the results to the respective lists
         distances.append(distance)
@@ -88,5 +88,6 @@ def main():
 
 if __name__ == '__main__':
     unit = str(input("\tPlease provide the desired unit (km/mi), type: metric or imperial:   "))
+    mode = str(input("\tPlease provide the transportation mode: driving, bicycling, walking, transit:   "))
     #unit = sys.argv[1]
     main()
