@@ -2,3 +2,4 @@ output.*
 cache.json
 output*
 cache.json
+venv

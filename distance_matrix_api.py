@@ -6,9 +6,9 @@ import json
 from functools import wraps
 
 
-# Set your Google Maps API key
-with open('your_secret_api_key.txt') as f:
-    API_KEY = f.read().strip()
+# Set your Google Maps API key (uncomment this if you wish to access your key from a text file)
+# with open('your_secret_api_key.txt') as f:
+#     API_KEY = f.read().strip()
 
 # Set up caching
 CACHE_FILE = 'cache.json'
@@ -87,6 +87,12 @@ def main():
 
 
 if __name__ == '__main__':
+    print("""\nThis script is designed to auto calculate distance and time between origin-destination pairs in a spreadsheet.\n
+          IMPORTANT: Make sure you place your 'input.xlsx' file containing two columns: origin and destination,\n
+          and that it has only one sheet.\n
+          The next prompt will ask you for the different parameters. THANK YOU !
+          """)
+    API_KEY = str(input("\tPlease paste your google maps api key here: ")).strip()
     unit = str(input("\tPlease provide the desired unit (km/mi), type: metric or imperial:   "))
     mode = str(input("\tPlease provide the transportation mode: driving, bicycling, walking, transit:   "))
     #unit = sys.argv[1]
