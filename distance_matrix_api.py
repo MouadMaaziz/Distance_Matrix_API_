@@ -80,6 +80,7 @@ def main():
 
     # Save the updated data to an Excel file
     data.to_excel('output.xlsx', index=False)
+    print('See the output.xlsx file')
 
 
 
@@ -88,7 +89,7 @@ def main():
 
 if __name__ == '__main__':
     print("""\nThis script is designed to auto calculate distance and time between origin-destination pairs in a spreadsheet.\n
-          IMPORTANT: Make sure you place your 'input.xlsx' file containing two columns: origin and destination,\n
+          IMPORTANT: Make sure you place next to this executable, your 'input.xlsx' file containing two columns: origin and destination,
           and that it has only one sheet.\n
           The next prompt will ask you for the different parameters. THANK YOU !
           """)
