@@ -5,8 +5,6 @@ import json
 
 
 
-
-
 def cached(func):
     """Decorator function to cache API responses."""
 
@@ -17,7 +15,6 @@ def cached(func):
             cache = json.load(f)
     else:
         cache = {}
-
 
     @wraps(func)
     def wrapper(*args, **kwargs):
