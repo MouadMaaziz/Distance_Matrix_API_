@@ -1,22 +1,15 @@
 import os, sys
 from datetime import datetime
 import glob
+from datetime import datetime, timedelta
 import pandas as pd
 from distance_matrix_api import get_distance_matrix
 from parse_duration import duration_to_delta
+import schedule
+import time
+import itertools
 
-
-
-if __name__ == '__main__':
-
-    print("""\nThis script is designed to auto calculate distance and time between origin-destination pairs in a spreadsheet.\n
-          IMPORTANT: Make sure you place next to this executable, your 'input.xlsx' file containing two columns: origin and destination,
-          and that it has only one sheet.\n
-          The next prompt will ask you for the different parameters. THANK YOU !
-          """)
-    # API_KEY = str(input("\tPlease paste your google maps api key here: ")).strip()
-    API_KEY = 'AIzaSyC6Q1B5ZXLOOihBKlP-sSY-uR82DlU7LZQ'
-    unit = str(input("\tPlease provide the desired unit (km/mi), type: metric or imperial:   "))
+def scheduled_calculation(API_KEY, unit):
 
     # Load data from Excel file
     data = pd.read_excel('input.xlsx')
@@ -26,7 +19,7 @@ if __name__ == '__main__':
     distances = []
     durations = []
     modes = []
-    
+
     for i, row in data.iterrows():
         origin = row['origin']
         destination = row['destination']
@@ -52,7 +45,9 @@ if __name__ == '__main__':
 
 
     # Get the last created output excel as the base file to append to
-    old_output_file = sorted(glob.glob("output*.xlsx"), key= lambda x:os.path.getctime(x), reverse= True)[0]
+    old_output_file = sorted(glob.glob("output*.xlsx"),
+                            key= lambda x:os.path.getctime(x),
+                            reverse= True)[0]
 
     # Create a new output file with ctime in its name
     new_output_file = f'output_{datetime.now().strftime("%Y-%m-%d_at_%H_%M_%S")}.xlsx'
@@ -66,16 +61,84 @@ if __name__ == '__main__':
         updated_df.to_excel(new_output_file, index=False)
         for excel in glob.glob("output*.xlsx"):
             if excel != new_output_file:
-                os.remove(excel)
+                try:
+                    os.remove(excel)
+                except PermissionError:
+                    pass
+
         print(f'Created {new_output_file}')
 
     except FileNotFoundError:
         print('Creating output.xlsx')
         data.to_excel(new_output_file, index=False)
         os.remove(old_output_file)
-    print(f'Created {new_output_file}')
+        print(f'Created {new_output_file}')
 
 
 
 
+
+def welcome_message():
+    print("""
+    🚗 Welcome to the Auto Distance and Time Calculator! 
+
+    Get ready to effortlessly calculate distances and travel times between origin-destination pairs in your spreadsheet!
+
+    ⚠️ IMPORTANT: Place this script next to 'input.xlsx,' which should have columns for origin and destination on a single sheet.
+
+    Let's get started! The upcoming prompts will walk you through the setup. Thank you for choosing our tool! 🚀
+    """)
+
+def get_user_input():
+    API_KEY = str(input("🔑 Please paste your Google Maps API key here: ")).strip()
+    unit = input("Fantastic! 🌍 Let's pick the unit of measurement. Enter 'metric' for kilometers or 'imperial' for miles: ")
+    return API_KEY, unit
+
+
+def countdown_display(minutes):
+    spinner = itertools.cycle(['-', '\\', '|', '/'])  # Spinner animation characters
+    minutes = float(minutes)
+    while minutes > 0:  # Convert minutes to float
+        print(f"\r⏰ Next execution in {round(minutes,2)} {next(spinner)}          ", end="")
+        sys.stdout.flush()
+        time.sleep(0.5)  # Adjusted sleep time for faster spinner
+        minutes = minutes - (0.5 / 60)  # Decreased minutes by the sleep time
+    print("\n", end="")
+
+
+
+if __name__ ==  '__main__':
+    
+    
+
+    # API_KEY = 'AIzaSyC6Q1B5ZXLOOihBKlP-sSY-uR82DlU7LZQ'
+    welcome_message()
+    
+    # User input
+    API_KEY, unit = get_user_input()
+
+    # Initial execution
+    scheduled_calculation(API_KEY, unit)
+
+    # Schedule the function to run every 1 minute
+    schedule.every(1).hours.do(scheduled_calculation, API_KEY, unit)
+
+    # Countdown and execute the function again after 1 minute
+    try:
+        while True:
+            next_run = schedule.idle_seconds()
+            time_until_next_run = max(next_run, 0)
+
+            # Convert seconds to hours and minutes for a more user-friendly display
+            minutes, remainder = divmod(time_until_next_run, 60)
+
+            countdown_display(f"{int(minutes)}")
+
+            if time_until_next_run <= 0:
+                print("Executing scheduled calculation... ")
+                schedule.run_pending()
+                print("Calculation complete! ✅\n")
+    except KeyboardInterrupt:
+        print("\nUser interrupted. Exiting gracefully. 👋")
+        sys.exit(0)
  
