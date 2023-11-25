@@ -4,7 +4,6 @@ import os
 import json
 
 
-
 def cached(func):
     """Decorator function to cache API responses."""
 
