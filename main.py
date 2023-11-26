@@ -43,7 +43,6 @@ def scheduled_calculation(API_KEY, unit):
     data['arriving_time'] = datetime.now() + data['duration'].apply(duration_to_delta)
     data['mode'] = modes
 
-
     # Get the last created output excel as the base file to append to
     old_output_file = sorted(glob.glob("output*.xlsx"),
                             key= lambda x:os.path.getctime(x),
@@ -51,8 +50,6 @@ def scheduled_calculation(API_KEY, unit):
 
     # Create a new output file with ctime in its name
     new_output_file = f'output_{datetime.now().strftime("%Y-%m-%d_at_%H_%M_%S")}.xlsx'
-
-
 
     # if output.xlsx exists append if not create a new one:
     try:
@@ -74,32 +71,27 @@ def scheduled_calculation(API_KEY, unit):
         os.remove(old_output_file)
         print(f'Created {new_output_file}')
 
-
-
-
-
 def welcome_message():
     print("""
-    🚗 Welcome to the Auto Distance and Time Calculator! 
+    Welcome to the Auto Distance and Time Calculator! 
 
     Get ready to effortlessly calculate distances and travel times between origin-destination pairs in your spreadsheet!
 
-    ⚠️ IMPORTANT: Place this script next to 'input.xlsx,' which should have columns for origin and destination on a single sheet.
+    IMPORTANT: Place this script next to 'input.xlsx,' which should have columns for origin and destination on a single sheet.
 
-    Let's get started! The upcoming prompts will walk you through the setup. Thank you for choosing our tool! 🚀
+    Let's get started! The upcoming prompts will walk you through the setup. Thank you for choosing our tool! 
     """)
 
 def get_user_input():
-    API_KEY = str(input("🔑 Please paste your Google Maps API key here: ")).strip()
-    unit = input("Fantastic! 🌍 Let's pick the unit of measurement. Enter 'metric' for kilometers or 'imperial' for miles: ")
+    API_KEY = str(input("Please paste your Google Maps API key here: ")).strip()
+    unit = input("Fantastic! Let's pick the unit of measurement. Enter 'metric' for kilometers or 'imperial' for miles: ")
     return API_KEY, unit
 
-
 def countdown_display(minutes):
-    spinner = itertools.cycle(['-', '\\', '|', '/'])  # Spinner animation characters
+    spinner = itertools.cycle(['—', '\\', '|', '/'])  # Spinner animation characters
     minutes = float(minutes)
     while minutes > 0:  # Convert minutes to float
-        print(f"\r⏰ Next execution in {round(minutes,2)} {next(spinner)}          ", end="")
+        print(f"\r Next execution in {round(minutes,2)} minutes  {next(spinner)}          ", end="")
         sys.stdout.flush()
         time.sleep(0.5)  # Adjusted sleep time for faster spinner
         minutes = minutes - (0.5 / 60)  # Decreased minutes by the sleep time
@@ -109,9 +101,6 @@ def countdown_display(minutes):
 
 if __name__ ==  '__main__':
     
-    
-
-    # API_KEY = 'AIzaSyC6Q1B5ZXLOOihBKlP-sSY-uR82DlU7LZQ'
     welcome_message()
     
     # User input
@@ -137,8 +126,8 @@ if __name__ ==  '__main__':
             if time_until_next_run <= 0:
                 print("Executing scheduled calculation... ")
                 schedule.run_pending()
-                print("Calculation complete! ✅\n")
+                print("Calculation complete! \n")
     except KeyboardInterrupt:
-        print("\nUser interrupted. Exiting gracefully. 👋")
+        print("\nUser interrupted. Exiting gracefully. ")
         sys.exit(0)
  
