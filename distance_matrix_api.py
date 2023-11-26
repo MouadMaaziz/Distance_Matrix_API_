@@ -1,11 +1,6 @@
 import requests
 from caching import cached
 
-
-# Set your Google Maps API key (uncomment this if you wish to access your key from a text file)
-# with open('your_secret_api_key.txt') as f:
-#     API_KEY = f.read().strip()
-
 @cached
 def get_distance_matrix(API_KEY, origin, destination, unit):
     """Function to send the Distance Matrix API request and parse the response for each travel mode"""

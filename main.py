@@ -1,7 +1,6 @@
 import os, sys
 from datetime import datetime
 import glob
-from datetime import datetime, timedelta
 import pandas as pd
 from distance_matrix_api import get_distance_matrix
 from parse_duration import duration_to_delta
@@ -10,7 +9,8 @@ import time
 import itertools
 
 def scheduled_calculation(API_KEY, unit):
-
+    """ The function reads the template spreadsheet input.xlsx and calculates the travel distance and duration between origin-destination
+        pairs at the current time and append this to an output.xlsx file."""
     # Load data from Excel file
     data = pd.read_excel('input.xlsx')
     # data = pd.read_excel(glob.glob("output*.xlsx")[0])
@@ -43,19 +43,27 @@ def scheduled_calculation(API_KEY, unit):
     data['arriving_time'] = datetime.now() + data['duration'].apply(duration_to_delta)
     data['mode'] = modes
 
-    # Get the last created output excel as the base file to append to
-    old_output_file = sorted(glob.glob("output*.xlsx"),
-                            key= lambda x:os.path.getctime(x),
-                            reverse= True)[0]
+
+
+
+
 
     # Create a new output file with ctime in its name
     new_output_file = f'output_{datetime.now().strftime("%Y-%m-%d_at_%H_%M_%S")}.xlsx'
 
+
     # if output.xlsx exists append if not create a new one:
     try:
+        # Get the latest output file to build upon
+        old_output_file = sorted(glob.glob("output*.xlsx"),
+                                key= lambda x:os.path.getctime(x),
+                                reverse= True)[0]
+        
         existing_df = pd.read_excel(old_output_file)
         updated_df = pd.concat([existing_df, data], ignore_index=True)
         updated_df.to_excel(new_output_file, index=False)
+        
+        # Delete all the previous output.xlsx files
         for excel in glob.glob("output*.xlsx"):
             if excel != new_output_file:
                 try:
@@ -65,10 +73,10 @@ def scheduled_calculation(API_KEY, unit):
 
         print(f'Created {new_output_file}')
 
-    except FileNotFoundError:
+    except :
+        # When no old output files are found the fallback is creating a new one.
         print('Creating output.xlsx')
         data.to_excel(new_output_file, index=False)
-        os.remove(old_output_file)
         print(f'Created {new_output_file}')
 
 def welcome_message():
