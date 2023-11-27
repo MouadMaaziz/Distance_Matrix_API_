@@ -1,4 +1,6 @@
-# Distance_Matrix_API
+# Distance_Matrix_API (Scheduled calculation)
+___UPDATE___: In this script version, my customer reqested a scheduled  calculation of travel distance and duration to account for the change of road condition
+throughout the day (in each hour), constructions/ traffic congestion / toll roads and bridges. Therefore, the departure_time query parameter was included in the API calls.
 This Python script uses the Pandas library to read data from an Excel file, makes requests to the Google Maps Distance Matrix API to retrieve distance and duration information between origins and destinations, caches API responses for efficiency, and saves the results to an output Excel file. This way both the number of API requests and associated costs are reduced. </br>
 
 ![Image Alt Text](./distance-matrix-google-maps-api.jpg)

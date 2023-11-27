@@ -25,7 +25,7 @@ def scheduled_calculation(API_KEY, unit):
         destination = row['destination']
 
         # Get the distance matrix for this row's origin and destination and sort them by duration.
-        distance_and_duration_per_mode = get_distance_matrix(API_KEY, origin, destination, unit)
+        distance_and_duration_per_mode = get_distance_matrix(API_KEY, origin, destination, unit,int(datetime.timestamp(datetime.now())))
         fastest_navigation = sorted(distance_and_duration_per_mode,
                                     key= lambda x:duration_to_delta(x[0]).total_seconds()
                             )
