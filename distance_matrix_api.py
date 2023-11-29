@@ -2,11 +2,15 @@ import requests
 from caching import cached
 
 # @cached
-def get_distance_matrix(API_KEY, origin, destination, unit,timestamp):
+def get_distance_matrix(API_KEY, origin, destination, unit, travel_mode, timestamp):
     """Function to send the Distance Matrix API request and parse the response for each travel mode"""
+    if travel_mode in ('fastest', None, ""):
+        modes = ['driving', 'bicycling', 'walking', 'transit']
+    else:
+        modes = [travel_mode]
 
-    modes = ['driving', 'bicycling', 'walking', 'transit']
     distance_and_duration_per_mode = []
+
 
     for mode in modes:
         url = f'https://maps.googleapis.com/maps/api/distancematrix/json?units={unit}&origins={origin}&destinations={destination}&mode={mode}&key={API_KEY}&departure_time={timestamp}'
@@ -18,6 +22,7 @@ def get_distance_matrix(API_KEY, origin, destination, unit,timestamp):
                 duration = dt['rows'][0]['elements'][0]['duration']['text']
                 distance = dt['rows'][0]['elements'][0]['distance']['text']
                 distance_and_duration_per_mode.append((duration, distance, mode))
+            
     return distance_and_duration_per_mode     
         
 
