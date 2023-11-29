@@ -1,17 +1,15 @@
 from datetime import timedelta
+import re
 
+def duration_to_delta(duration_str):
+    pattern = r'(?:(?P<days>\d+)\s*days?)?\s*(?:(?P<hours>\d+)\s*hours?)?\s*(?:(?P<minutes>\d+)\s*mins?)?'
+    matches = re.search(pattern, duration_str)
+    if not matches:
+        return timedelta()  # Return 0 duration if no matches
 
-def duration_to_delta(duration:str):
-    # split the string by space
-    component_duration = duration.split()
+    duration_parts = matches.groupdict(default='0')
+    days = int(duration_parts['days'])
+    hours = int(duration_parts['hours'])
+    minutes = int(duration_parts['minutes'])
 
-    days, hours, mins = 0, 0, 0
-    for i, e in enumerate(component_duration):
-        if e == 'day' or e =='days':
-            days = int(component_duration[i-1])
-        elif e == 'hour' or e== 'hours':
-            hours = int(component_duration[i-1])
-        elif e == 'min' or e== 'mins':
-            mins = int(component_duration[i-1])
-
-    return timedelta(days=days, hours=hours, minutes=mins )
+    return timedelta(days=days, hours=hours, minutes=minutes)

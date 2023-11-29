@@ -1,43 +1,29 @@
-# Distance_Matrix_API (Scheduled calculation)
-___UPDATE___: In this script version, my customer reqested a scheduled  calculation of travel distance and duration to account for the change in road condition
-throughout the day (in each hour) e.g, git constructions/ traffic congestion / toll roads and bridges. Therefore, the departure_time query parameter was included in the API calls.<br>
-This Python script uses the Pandas library to read data from an Excel file, makes requests to the Google Maps Distance Matrix API to retrieve distance and duration information between origins and destinations, caches API responses for efficiency, and saves the results to an output Excel file. This way both the number of API requests and associated costs are reduced. </br>
+# Distance Matrix API Scheduler
 
-![Image Alt Text](./distance-matrix-google-maps-api.jpg)
+The Distance Matrix API Scheduler is a robust Python script designed to periodically compute travel distances and durations using the Google Maps Distance Matrix API, taking into account potential changes in road conditions throughout the day. The script accounts for various dynamic factors such as construction sites, traffic congestion, and toll road conditions by scheduling calculations hourly and leveraging the departure_time parameter in API calls.
 
+![Distance Matrix API Visualization](./distance-matrix-google-maps-api.jpg)
 
-## Requirements
+## Features
+
+- Automated hourly updates to reflect changing road conditions.
+- Support for various travel modes and units of measurement (metric/imperial).
+- Caching mechanism to optimize API query efficiency and reduce costs.
+- Easy-to-use with an interactive setup prompt.
+- Outputs results to a timestamped Excel file for easy tracking and analysis.
+
+## Prerequisites
+
 - Python 3.x
 - pandas
-- openpyxl (if you want to write the output in .xlsx format)
-- requests (if the input files are in .xls format)
+- openpyxl (optional, for writing to `.xlsx` format)
+- requests
 
+## Getting Started
 
-## Usage
-
-</br>1. Clone or download this repository to your local machine.
-
-</br>2. Obtain a Google Maps API key and save it in a text file named "your_secret_api_key.txt" in the same directory as the script.
-
-</br>3. Install the required dependencies by running the command
-> pip install pandas requests
-
-</br>4. Create an input Excel file named 'input.xlsx' in the same directory as the script, and add a sheet named Sheet1 with two columns: origin and destination. Enter the addresses you want to calculate the distances and durations for in these columns.
-
-
-</br>5. Run the script, then it will prompt you for the desired unit (metric or imperial) and transportation mode
-> python distance_matrix_api.py 
-
-</br>6. The script will output the results to a new Excel file named output.xlsx in the same directory.
-
-
-## Caching
-To avoid sending unnecessary API requests, the script implements caching of the API responses using a simple dictionary stored in a JSON file named 'cache.json'. If a response has already been cached for a particular origin and destination address pair, the script will return the cached response instead of sending a new API request.
-
-
-## Contributing
-If you find a bug or have a feature request, please open an issue or submit a pull request on GitHub.
-Or contact me through my e-mail: mouad.maaziz@gmail.com
-
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+1. Clone or download this repository to your local machine.
+2. Obtain your Google Maps API key and store it securely.
+3. Install the required dependencies with the command:
+   pip install pandas requests
+4. Prepare an input file named input.xlsx with two columns: origin and destination. Fill in your locations.
+5. Execute the script, and follow the interactive prompts to set preferences for units and travel mode.
